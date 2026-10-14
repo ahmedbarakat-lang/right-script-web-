@@ -127,19 +127,25 @@
   //    talk to the Apps Script JSON API via fetch()
   // =====================================================
   async function callApi(action, args) {
-    const res = await fetch(API_URL, {
-      method: 'POST',
-      // text/plain avoids a CORS preflight, which Apps Script cannot answer
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify({ action: action, args: args })
-    });
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'text/plain;charset=utf-8'
+    },
+    body: JSON.stringify({
+      action: action,
+      args: args
+    })
+  });
 
-    const body = await res.json();
+  const body = await res.json();
 
-    if (!body.ok) throw new Error(body.error || 'Request failed.');
-
-    return body.result;
+  if (!res.ok || !body.ok) {
+    throw new Error(body.error || 'Request failed.');
   }
+
+  return body.result;
+}
 
   function makeRunner_(ok, failHandler) {
     return new Proxy({}, {
