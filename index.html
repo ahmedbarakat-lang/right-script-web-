@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Right Script API Test</title>
+</head>
+<body>
+  <h2>Right Script API Connection Test</h2>
+  <button id="testButton">Test API Connection</button>
+  <pre id="result">Ready to test.</pre>
+
+  <script>
+    const API_URL = 'https://script.google.com/macros/s/AKfycbwpzGtlwy73HcloOig_59z8SDgHNOcaM5_qdNeDGsNzSnNjCnw9Ark1acwn7_G-uGeyZA/exec';
+
+    document.getElementById('testButton').addEventListener('click', async () => {
+      const result = document.getElementById('result');
+      result.textContent = 'Testing connection...';
+
+      try {
+        const response = await fetch(API_URL);
+        const data = await response.json();
+        result.textContent = JSON.stringify(data, null, 2);
+      } catch (error) {
+        result.textContent =
+          'Connection failed: ' + error.message +
+          '\nCheck the browser Console for CORS or redirect errors.';
+      }
+    });
+  </script>
+</body>
+</html>
